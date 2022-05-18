@@ -9,5 +9,4 @@ public class BoostrapspringbootApplication {
     public static void main(String[] args) {
         SpringApplication.run(BoostrapspringbootApplication.class, args);
     }
-
 }
