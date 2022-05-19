@@ -26,13 +26,17 @@ public class PatientController {
     @GetMapping("/index")
     public String patients(Model model,
                            @RequestParam(name = "page",defaultValue = "0") int page,
-                           @RequestParam(name = "size",defaultValue = "5") int size){
-        Page<Patient> pagePatients=patientRepository.findAll(PageRequest.of(page,size));
+                           @RequestParam(name = "size",defaultValue = "5") int size,
+                           @RequestParam(name = "keyword",defaultValue = "") String keyword
+    ){
+        Page<Patient> pagePatients=patientRepository.findByNomCompletContains(keyword,PageRequest.of(page,size));
         model.addAttribute("patients",pagePatients.getContent());
         /*pour stoker mes nombres de page et pouvoir naviger voir code ci-dessous*/
         model.addAttribute("pages",new int[pagePatients.getTotalPages()]);
         //je vais selectionner la page courante avek la methode ci-dessous
         model.addAttribute("currentPage",page);
+        //pour stoker le keyword actuel
+        model.addAttribute("keyword",keyword);
         return "patient";
     }
     @GetMapping("/formulaire")
