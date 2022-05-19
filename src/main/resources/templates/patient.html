@@ -50,7 +50,8 @@
                         </a>
                     </td>
                     <td class="text-center">
-                        <a onclick="return confirm('Etes-vous sur de vouloir supprimer?')" th:href="@{delete(id=${patient.id})}">
+<!--                        pusique je veux si je supprimer en etant sur uen page que je reste sur la page courant donc je vais ogmenter de parametre dans delete-->
+                        <a onclick="return confirm('Etes-vous sur de vouloir supprimer?')" th:href="@{delete(id=${patient.id},keyword=${keyword},page=${currentPage})}">
                             <i class="bi bi-trash3-fill" style="color: #ce0033 ;font-size: 1.5rem"></i>
                         </a>
                     </td>

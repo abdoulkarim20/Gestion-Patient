@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -47,9 +48,22 @@ public class PatientController {
     }
 
     @GetMapping("/delete")
-    public String delete(Long id){
+    //pourkw les trois argument dans la methode parce que je veux que si je supprime je reste dans la page courante avek la navigation
+    public String delete(Long id,String keyword,int page){
         patientRepository.deleteById(id);
+        return "redirect:/index?page="+page+"&keyword="+keyword;
+    }
+    //la redirection dans la page accueil qui est index
+    @GetMapping("/")
+    public String home(){
         return "redirect:/index";
+    }
+
+    //Supposons que je veux maintant travail coter client je peux proceder comme suit
+    @GetMapping("/patients")
+    @ResponseBody
+    public List<Patient> patientList(){
+        return patientRepository.findAll();
     }
 
 }
