@@ -47,6 +47,24 @@
                 </tr>
                 </tbody>
             </table>
+<!--            <ul>-->
+<!--               status me permet de savoir sur kel page je me trouve&ndash;&gt;
+                   th:class=${} me permet d'appliquer le css sur le bouton ou nous somme-->
+<!--                <li th:each="page,status:${pages}">-->
+<!--                    <a th:text="${status.index}"></a>-->
+<!--                </li>-->
+<!--            </ul>-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:each="page,status:${pages}">
+                        <a
+                                th:class="${status.index==currentPage?'mx-1 btn btn-primary':'btn btn-outline-info mx-1'}"
+                                th:text="${status.index}"
+                                th:href="@{index(page=${status.index})}"
+                        ></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
