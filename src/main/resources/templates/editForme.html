@@ -14,11 +14,12 @@
 <div layout:fragment="content1">
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header"><h3 class="text-center">Ajouter un patient</h3></div>
+            <div class="card-header"><h3 class="text-center">Modifier un patient</h3></div>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="mx-2 my-2">
-                        <form method="POST" action="" th:action="@{save}">
+                        <form method="POST" action="" th:action="@{save(page=${page},keyword=${keyword})}">
+                                <input type="hidden" name="id" th:value="${patient.id}">
                             <div class="mb-3">
                                 <label for="nomComplet" class="form-label">Nom et Prenoms</label>
                                 <input type="text" class="form-control" name="nomComplet" th:value="${patient.nomComplet}" id="nomComplet">
