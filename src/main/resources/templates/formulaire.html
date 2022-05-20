@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                layout:decorate="templet">
 <head>
     <meta charset="UTF-8">
     <title>Forme-Patient</title>
@@ -9,36 +11,45 @@
     >
 </head>
 <body>
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header"><h3 class="text-center">Ajouter un patient</h3></div>
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="mx-2 my-2">
-                    <form method="POST" action="" th:object="${patient}">
+<div layout:fragment="content1">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header"><h3 class="text-center">Ajouter un patient</h3></div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="mx-2 my-2">
+                        <form method="POST" action="" th:action="@{save}">
+                                <input type="hidden" name="id" th:value="${patient.id}">
+                            <div class="mb-3">
+                                <label for="nomComplet" class="form-label">Nom et Prenoms</label>
+                                <input type="text" class="form-control" name="nomComplet" th:value="${patient.nomComplet}" id="nomComplet">
+                                <span class="text-danger" th:errors="${patient.nomComplet}"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateNaissance" class="form-label">Date de naissance</label>
+                                <input type="date" name="dateNaissance" th:value="${patient.dateNaissance}" class="form-control" id="dateNaissance">
+                                <span class="text-danger" th:errors="${patient.dateNaissance}"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Malade ?</label>
+                                <input type="checkbox" name="malade" th:checked="${patient.malade}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="score" class="form-label">Le score</label>
+                                <input type="text" name="score" th:value="${patient.score}" class="form-control" id="score" aria-describedby="emailHelp">
+                                <span class="text-danger" th:errors="${patient.score}"></span>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Nom et Prenoms</label>
-                            <input type="text" class="form-control" name="nomComplet" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Date de naissance</label>
-                            <input type="date" name="dateNaissance" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Le score</label>
-                            <input type="number" name="score" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary text-center">Envoyer</button>
-                    </form>
+                            <button type="submit" class="btn btn-primary text-center">Envoyer</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
                 </div>
             </div>
-            <div class="col-md-6 col-sm-12">
-            </div>
         </div>
-    </div>
 
+    </div>
 </div>
 
 </body>

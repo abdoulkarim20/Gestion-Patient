@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                layout:decorate="templet">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,72 +12,78 @@
     >
 </head>
 <body>
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-8">
-                    <h3 class="text-center">La liste des patients</h3>
-                </div>
-                <div class="col-4">
-                    <form class="d-flex" method="get" th:action="@{index}">
-                        <input class="form-control me-2" type="tex" name="keyword" th:value="${keyword}" placeholder="Rechercher un patient">
-                        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 1.5rem"></i></button>
-                    </form>
+<div layout:fragment="content1">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <h3 class="text-center">La liste des patients</h3>
+                    </div>
+                    <div class="col-4">
+                        <form class="d-flex" method="get" th:action="@{index}" role="search">
+                            <input class="form-control me-2" type="tex" name="keyword" th:value="${keyword}" placeholder="Rechercher un patient" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 1.5rem"></i></button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nom et Prenoms</th>
-                    <th scope="col">Date de naissance</th>
-                    <th scope="col">Malade</th>
-                    <th scope="col">Score</th>
-                    <th scope="col" colspan="2" class="text-center">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="patient:${patients}">
-                    <td th:text="${patient.id}"></td>
-                    <td th:text="${patient.nomComplet}"></td>
-                    <td th:text="${patient.dateNaissance}"></td>
-                    <td th:text="${patient.malade}"></td>
-                    <td th:text="${patient.score}"></td>
-                    <td class="text-center">
-                        <a href="#">
-                            <i class="bi bi-pencil-square" style="color: #2e45ce;font-size: 1.5rem"></i>
-                        </a>
-                    </td>
-                    <td class="text-center">
-<!--                        pusique je veux si je supprimer en etant sur uen page que je reste sur la page courant donc je vais ogmenter de parametre dans delete-->
-                        <a onclick="return confirm('Etes-vous sur de vouloir supprimer?')" th:href="@{delete(id=${patient.id},keyword=${keyword},page=${currentPage})}">
-                            <i class="bi bi-trash3-fill" style="color: #ce0033 ;font-size: 1.5rem"></i>
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-<!--            <ul>-->
-<!--               status me permet de savoir sur kel page je me trouve&ndash;&gt;
-                   th:class=${} me permet d'appliquer le css sur le bouton ou nous somme-->
-<!--                <li th:each="page,status:${pages}">-->
-<!--                    <a th:text="${status.index}"></a>-->
-<!--                </li>-->
-<!--            </ul>-->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item" th:each="page,status:${pages}">
-                        <a
-                                th:class="${status.index==currentPage?'mx-1 btn btn-primary':'btn btn-outline-info mx-1'}"
-                                th:text="${status.index}"
-                                th:href="@{index(page=${status.index},keyword=${keyword})}"
-                        ></a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom et Prenoms</th>
+                        <th scope="col">Date de naissance</th>
+                        <th scope="col">Malade</th>
+                        <th scope="col">Score</th>
+                        <th scope="col" colspan="2" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="patient:${patients}">
+                        <td th:text="${patient.id}"></td>
+                        <td th:text="${patient.nomComplet}"></td>
+                        <td th:text="${patient.dateNaissance}"></td>
+                        <td th:text="${patient.malade}"></td>
+                        <td th:text="${patient.score}"></td>
+                        <td class="text-center">
+<!--                            puisque ici je veux si je modifie et que je me retrouve sur -->
+<!--                            une page que je reste sur la meme page apres modification-->
+<!--                            donc je dois ajouter de paramete a la methode modification-->
+<!--                            voir la methode. ou video 2 pour mieu comprendre-->
+                            <a th:href="@{editPatient(id=${patient.id},keyword=${keyword},page=${currentPage})}">
+                                <i class="bi bi-pencil-square" style="color: #2e45ce;font-size: 1.5rem"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <!--pusique je veux si je supprimer en etant sur une page que je reste sur la page courant donc je vais ogmenter de parametre dans delete-->
+                            <a onclick="return confirm('Etes-vous sur de vouloir supprimer?')" th:href="@{delete(id=${patient.id},keyword=${keyword},page=${currentPage})}">
+                                <i class="bi bi-trash3-fill" style="color: #ce0033 ;font-size: 1.5rem"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--            <ul>-->
+                <!--               status me permet de savoir sur kel page je me trouve&ndash;&gt;
+                                   th:class=${} me permet d'appliquer le css sur le bouton ou nous somme-->
+                <!--                <li th:each="page,status:${pages}">-->
+                <!--                    <a th:text="${status.index}"></a>-->
+                <!--                </li>-->
+                <!--            </ul>-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:each="page,status:${pages}">
+                            <a
+                                    th:class="${status.index==currentPage?'mx-1 btn btn-primary':'btn btn-outline-info mx-1'}"
+                                    th:text="${status.index}"
+                                    th:href="@{index(page=${status.index},keyword=${keyword})}"
+                            ></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

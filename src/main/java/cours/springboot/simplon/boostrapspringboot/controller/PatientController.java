@@ -9,10 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -42,9 +45,15 @@ public class PatientController {
     }
     @GetMapping("/formulaire")
     public String formulaire(Model model){
-        Patient patient=new Patient();
-        model.addAttribute("patient",patient);
+//        Patient patient=new Patient();
+        model.addAttribute("patient",new Patient());
         return "formulaire";
+    }
+    @PostMapping("/save")
+    public String save(Model model, @Valid Patient patient, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return "/formulaire";
+        patientRepository.save(patient);
+        return "redirect:/index";
     }
 
     @GetMapping("/delete")
@@ -64,6 +73,23 @@ public class PatientController {
     @ResponseBody
     public List<Patient> patientList(){
         return patientRepository.findAll();
+    }
+
+    //modification du patient
+    /*afin de garder la page sur la quelle nous on se trouve c'est pourkw on
+    * eut dans la function keyword et page comme argument suplementaire*/
+    @GetMapping("/editPatient")
+    public String editPatient(Model model,Long id,String keyword ,int page){
+        /*Patient patient=patientRepository.findById(id).orElse(null) // si ca existe pas returne null;
+        ou
+        Patient patient=patientRepository.findById(id).get() //signifie prend si ca existe*/
+
+        Patient patient=patientRepository.findById(id).orElse(null);
+        if (patient==null) throw new RuntimeException("Patient introuvable");
+        model.addAttribute("patient",patient);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("page",page);
+        return "formulaire";
     }
 
 }
