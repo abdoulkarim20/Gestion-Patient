@@ -24,7 +24,7 @@ public class PatientController {
     /*je veux faire la pagination donc
     * ma methode doit avoir de parametre supplementaire voir la methode
     * puisque nous devons utiliser la pagination donc on peut remplacer List<Patient> par Page<Patient>*/
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String patients(Model model,
                            @RequestParam(name = "page",defaultValue = "0") int page,
                            @RequestParam(name = "size",defaultValue = "5") int size,
@@ -40,32 +40,32 @@ public class PatientController {
         model.addAttribute("keyword",keyword);
         return "patient";
     }
-    @GetMapping("/formulaire")
+    @GetMapping("/admin/formulaire")
     public String formulaire(Model model){
 //        Patient patient=new Patient();
         model.addAttribute("patient",new Patient());
         return "formulaire";
     }
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult,
                        @RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "") String keyword
     ){
         if (bindingResult.hasErrors()) return "/formulaire";
         patientRepository.save(patient);
-        return "redirect:/index?page="+page+"&keyword"+keyword;
+        return "redirect:/admin/index?page="+page+"&keyword"+keyword;
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     //pourkw les trois argument dans la methode parce que je veux que si je supprime je reste dans la page courante avek la navigation
     public String delete(Long id,String keyword,int page){
         patientRepository.deleteById(id);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/admin/index?page="+page+"&keyword="+keyword;
     }
     //la redirection dans la page accueil qui est index
     @GetMapping("/")
     public String home(){
-        return "redirect:/index";
+        return "home";
     }
 
     //Supposons que je veux maintant travail coter client je peux proceder comme suit
@@ -78,7 +78,7 @@ public class PatientController {
     //modification du patient
     /*afin de garder la page sur la quelle nous on se trouve c'est pourkw on
     * eut dans la function keyword et page comme argument suplementaire*/
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
     public String editPatient(Model model,Long id,String keyword ,int page){
         /*Patient patient=patientRepository.findById(id).orElse(null) // si ca existe pas returne null;
         ou
