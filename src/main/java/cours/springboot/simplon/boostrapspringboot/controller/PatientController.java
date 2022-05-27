@@ -53,14 +53,14 @@ public class PatientController {
     ){
         if (bindingResult.hasErrors()) return "/formulaire";
         patientRepository.save(patient);
-        return "redirect:/admin/index?page="+page+"&keyword"+keyword;
+        return "redirect:/user/index?page="+page+"&keyword"+keyword;
     }
 
     @GetMapping("/admin/delete")
     //pourkw les trois argument dans la methode parce que je veux que si je supprime je reste dans la page courante avek la navigation
     public String delete(Long id,String keyword,int page){
         patientRepository.deleteById(id);
-        return "redirect:/admin/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
     //la redirection dans la page accueil qui est index
     @GetMapping("/")
